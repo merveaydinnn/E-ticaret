@@ -1,0 +1,157 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="WebSablon.master.cs" Inherits="E_ticaret.WebSablon" %>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>E-ticaret</title>
+    <asp:ContentPlaceHolder ID="CphHead" runat="server"></asp:ContentPlaceHolder>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <form runat="server">
+        <section id="site" class="container">
+            <header class="row">
+                <nav class="row"></nav>
+                <div class="col-md-6" id="logo">
+                    <img src="/img/logo.png" style="font-weight: 100%; height: 100%; margin-top: 15px" />
+                </div>
+                <div class="col-md-6" id="Slogan">
+                    <marquee> <h1>Yüce Yazılım E-ticaret Proje</h1></marquee>
+
+                </div>
+
+            </header>
+
+            <nav class="navbar navbar-default row yataymenu">
+                <div class="container-fluid">
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="Default.aspx">Anasayfa <span class="glyphicon glyphicon-home"></span><span class="sr-only">(current)</span></a></li>
+                            <li><a href="Urunler.aspx">Urunler <span class="glyphicon glyphicon-th-large"></span></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Kategoriler <span class="glyphicon glyphicon-th-list"></span><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <asp:Repeater ID="Repeater2" runat="server" DataSourceID="kategoriSorgusu">
+                                        <ItemTemplate>
+
+                                            <li><a href="KategoriUrunListesi.aspx?KategoriID=<%# Eval("KategoriID") %>"><%# Eval("Ad") %></a></li>
+
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                    <asp:SqlDataSource runat="server" ID="kategoriSorgusu" ConnectionString='<%$ ConnectionStrings:ProjeE-ticaretConnectionString %>' SelectCommand="SELECT * FROM [Kategori]"></asp:SqlDataSource>
+
+
+                                    <li role="separator" class="divider"></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="Cart.aspx">
+                                <span class="badge"> 
+                                    <%-- sepetin yanına değer yazma --%>
+                                    <% if (Session["Sepet"] == null)
+                                        {
+                                            Response.Write("0");
+                                        }
+                                        else
+                                        {
+                                            System.Data.DataTable sepet = new System.Data.DataTable();
+                                            sepet = (System.Data.DataTable)Session["Sepet"];
+                                            Response.Write(sepet.Rows.Count);
+
+                                        }
+
+
+
+                                    %>
+
+                                </span>Sepet <span class="glyphicon glyphicon-shopping-cart" style="font-size: 16px"></span></a></li>
+                               <li><a href="Siparislerim.aspx"> Siparişlerim </a> </li>
+                            
+                            
+                            <li class="dropdown">
+                                <% if (Session["KullaniciAdi"] == null)
+                                    {  %>
+                                <a href="Login.aspx"><span class="dropdown-toggle" id="sBaslik" runat="server">Kullanıcı</span><span class="glyphicon glyphicon-user" style="font-size: 16px"></span></a>
+                            </li>
+
+                            <% }
+
+                                else
+                                {%>
+
+
+                            <li class="dropdown"><a href="#">
+                                <%  Response.Write(sBaslik.InnerText = string.Format(" Hoşgeldin  {0}  ", Session["KullaniciAdi"])); %>
+                            </a>
+
+
+                                <%} %>
+
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+            <section class="row">
+                <div class="col-md-2">
+                    <%--     Sol menu --%>
+                    <div class="panel panel-primary row">
+                        <div class="panel-heading ">Kampanyalı Urunler</div>
+                        <div class="panel body">
+                            <ul class="list-group">
+
+                                <asp:Repeater ID="Repeater1" runat="server" DataSourceID="SqlDataSource1">
+                                    <ItemTemplate>
+                                        <a href="UrunDetay.aspx?UrunID=<%#Eval("UrunID") %>">
+                                            <li class="list-group-item"><span class="glyphicon glyphicon-chevron-right"><%#Eval("Ad")%></a></span></li>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+
+                                <asp:SqlDataSource runat="server" ID="SqlDataSource1" ConnectionString='<%$ ConnectionStrings:ProjeE-ticaretConnectionString2 %>' SelectCommand="sp_EnucuzUrunler" SelectCommandType="StoredProcedure"></asp:SqlDataSource>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <%-- içerik--%>
+
+                    <asp:ContentPlaceHolder ID="CphIcerik" runat="server"></asp:ContentPlaceHolder>
+
+                </div>
+
+            </section>
+
+
+            <%--           <footer class="row">footer alanı </footer>--%>
+        </section>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <asp:ContentPlaceHolder ID="CphScript" runat="server"></asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

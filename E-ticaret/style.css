@@ -1,0 +1,43 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+
+#site{
+    background-color:whitesmoke; 
+    height:900px;
+    box-shadow:#000000 0 0 10px; /* siyah gölge yapma*/
+    border-radius:10px 10px 10px 10px; /*oval yapma*/
+    margin-top :10px; /*üsten ayrılma*/
+    
+}
+#logo {
+    height: 200px;
+    width: 300px;
+}
+header{
+    border-bottom:2px solid black;
+}
+#Slogan {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-family: 'Oswald', sans-serif , serif;
+}
+.yataymenu{
+    border-bottom:2px solid black;
+}
+.ayrac{
+    margin-bottom:10px;
+}
+footer {
+    background-color: red;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    color: white;
+    border-radius: 0 0 10px 10px;
+    border-top: 2px solid black;
+    
+}
+.sliderresmi{
+    width:100%;
+   
+}
